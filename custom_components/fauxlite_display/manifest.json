@@ -1,7 +1,9 @@
 {
-    "domain": "fauxlite_display",
+    "domain": "prolite_display",
     "name": "Faux-Lite Display",
-    "codeowners": ["@GraphicHealer"],
+    "codeowners": [
+        "@GraphicHealer"
+    ],
     "config_flow": true,
     "dependencies": [],
     "documentation": "https://github.com/GraphicHealer/Faux-Lite-Addon",
