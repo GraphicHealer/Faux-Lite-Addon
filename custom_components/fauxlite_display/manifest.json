@@ -1,10 +1,11 @@
 {
-    "domain": "prolite_display",
+    "domain": "fauxlite_display",
     "name": "Faux-Lite Display",
-    "codeowners": [],
+    "codeowners": ["@GraphicHealer"],
     "config_flow": true,
     "dependencies": [],
-    "documentation": "https://github.com/yourusername/prolite_display",
+    "documentation": "https://github.com/GraphicHealer/Faux-Lite-Addon",
+    "issue_tracker": "https://github.com/GraphicHealer/Faux-Lite-Addon/issues",
     "integration_type": "device",
     "iot_class": "local_polling",
     "requirements": [
