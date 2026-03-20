@@ -108,12 +108,11 @@ class ProliteHub:
         font: str | None = None,
         size: str | None = None,
         function: str | None = None,
-        beep: bool = False,
     ) -> bool:
         """Send a message to a specific page."""
         _LOGGER.info(
-            "send_message called with: page=%s, text=%s, color=%s, font=%s, size=%s, function=%s, beep=%s",
-            page, text, color, font, size, function, beep
+            "send_message called with: page=%s, text=%s, color=%s, font=%s, size=%s, function=%s",
+            page, text, color, font, size, function
         )
         message_parts = [f"<P{page}>"]
 
@@ -136,11 +135,6 @@ class ProliteHub:
             size_code = SIZES.get(size, size)
             message_parts.append(f"<{size_code}>")
             _LOGGER.debug("Adding size: %s -> %s", size, size_code)
-
-        # Add beep if requested
-        if beep:
-            message_parts.append("<FB>")
-            _LOGGER.debug("Adding beep command")
 
         # Add text as-is (no automatic trailing space)
         # Users can add trailing space manually if needed for looping
@@ -171,6 +165,7 @@ class ProliteHub:
             size: Size code (optional)
             function: Display function for the message (optional)
             exit_function: Function to use on page Y after message completes (optional, defaults to same as function)
+            beep: Whether to beep before displaying message
             repeat: Number of times to display the message
         """
         _LOGGER.info(
@@ -178,15 +173,21 @@ class ProliteHub:
             text, color, font, size, function, exit_function, beep, repeat
         )
 
+        # Step 1: Send beep command first if requested (on page X with beep function)
+        if beep:
+            beep_command = "<PX><FO> "
+            await self._send_command(beep_command)
+            _LOGGER.debug("Sent beep command: %s", beep_command)
+
         # Determine the function to use for page Y (exit/return page)
         # If exit_function is specified, use it; otherwise use the same function as the message
         y_function = exit_function if exit_function is not None else function
 
-        # Step 1: Set page Y to blank with the exit function
+        # Step 2: Set page Y to blank with the exit function
         # Use single space to prevent demo mode
         await self.send_message(page="Y", text=" ", function=y_function)
 
-        # Step 2: Set page Z with the message
+        # Step 3: Set page Z with the message
         await self.send_message(
             page="Z",
             text=text,
@@ -194,10 +195,9 @@ class ProliteHub:
             font=font,
             size=size,
             function=function,
-            beep=beep,
         )
 
-        # Step 3: Run page Z for 'repeat' times, then switch to blank page Y
+        # Step 4: Run page Z for 'repeat' times, then switch to blank page Y
         command = f"<RPZ><{repeat:02d}><RPY>"
         return await self._send_command(command)
 
@@ -209,16 +209,22 @@ class ProliteHub:
         """
         _LOGGER.info("send_beep called with: count=%d", count)
 
-        # Beep command format: <FB> for single beep, or repeat on a page
-        # For multiple beeps, we'll send the beep command multiple times
         if count < 1:
             count = 1
         if count > 99:
             count = 99
 
-        # Use page Z for beep, then return to page A
-        await self.send_message(page="Z", text=" ", beep=True)
-        command = f"<RPZ><{count:02d}><RPA>"
+        # Use oneshot message system with just beep command
+        # Step 1: Set page Y to blank (return page)
+        await self.send_message(page="Y", text=" ")
+
+        # Step 2: Set page Z with beep function and space
+        beep_command = "<PZ><FO> "
+        await self._send_command(beep_command)
+        _LOGGER.debug("Sent beep page command: %s", beep_command)
+
+        # Step 3: Run page Z for 'count' times, then return to page Y
+        command = f"<RPZ><{count:02d}><RPY>"
         return await self._send_command(command)
 
     async def show_time(self, page: str = "A") -> bool:
