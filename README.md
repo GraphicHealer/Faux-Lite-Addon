@@ -3,6 +3,8 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=GraphicHealer&repository=Faux-Lite-Addon&category=Integration)
+
 > **⚠️ FIRMWARE REQUIRED:** This integration requires the [Faux-Lite Firmware](https://github.com/GraphicHealer/Faux-Lite-Firmware) to be installed on an ESP32 connected to your Pro-Lite display. The firmware acts as a WiFi-to-Serial bridge that this integration communicates with. Please set up the firmware first before installing this integration.
 
 Control your Pro-Lite LED display directly from Home Assistant with full service call support, entities, and automations.
