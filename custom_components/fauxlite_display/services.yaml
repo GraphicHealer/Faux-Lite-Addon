@@ -1,0 +1,754 @@
+send_message:
+  name: Send Message
+  description: Send a one-shot message that displays and then clears (uses hidden pages Y and Z)
+  fields:
+    text:
+      name: Text
+      description: The text message to display
+      required: true
+      selector:
+        text:
+          multiline: true
+    color:
+      name: Color
+      description: Color for the text
+      required: false
+      selector:
+        select:
+          options:
+            - "dim_red"
+            - "red"
+            - "bright_red"
+            - "orange"
+            - "bright_orange"
+            - "light_yellow"
+            - "yellow"
+            - "bright_yellow"
+            - "lime"
+            - "dim_lime"
+            - "bright_lime"
+            - "bright_green"
+            - "green"
+            - "dim_green"
+            - "yel_grn_red"
+            - "rainbow"
+            - "red_grn_3d"
+            - "red_yel_3d"
+            - "grn_red_3d"
+            - "grn_yel_3d"
+            - "grn_on_red"
+            - "red_on_grn"
+            - "org_on_grn_3d"
+            - "lime_on_red_3d"
+            - "grn_on_red_3d"
+            - "red_on_grn_3d"
+    font:
+      name: Font
+      description: Font style for the text
+      required: false
+      selector:
+        select:
+          options:
+            - "normal"
+            - "bold"
+            - "italic"
+            - "bold_italic"
+            - "flash_normal"
+            - "flash_bold"
+            - "flash_italic"
+            - "flash_bold_italic"
+    size:
+      name: Size
+      description: Character size
+      required: false
+      selector:
+        select:
+          options:
+            - "5x7"
+            - "4x7"
+    function:
+      name: Function
+      description: Display function/animation
+      required: false
+      selector:
+        select:
+          options:
+            - "auto"
+            - "open"
+            - "cover"
+            - "cycling"
+            - "close_right"
+            - "close_left"
+            - "close_both"
+            - "scroll_up"
+            - "scroll_down"
+            - "overlap"
+            - "stacking"
+            - "appear"
+            - "random"
+            - "shift_left"
+            - "magic"
+    exit_function:
+      name: Exit Function
+      description: Function/animation to use when returning to blank page (optional, defaults to same as Function)
+      required: false
+      selector:
+        select:
+          options:
+            - "auto"
+            - "open"
+            - "cover"
+            - "cycling"
+            - "close_right"
+            - "close_left"
+            - "close_both"
+            - "scroll_up"
+            - "scroll_down"
+            - "overlap"
+            - "stacking"
+            - "appear"
+            - "random"
+            - "shift_left"
+            - "magic"
+    beep:
+      name: Beep
+      description: Enable audible beep with this message
+      required: false
+      default: false
+      selector:
+        boolean:
+    repeat:
+      name: Repeat
+      description: Number of times to display the message before clearing
+      required: false
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 99
+          step: 1
+
+send_formatted_message:
+  name: Send Formatted Message
+  description: Send a multi-segment message with different colors, fonts, and effects per segment (WYSIWYG-style)
+  fields:
+    page:
+      name: Page
+      description: Page to send the message to (A-Z)
+      required: false
+      default: "A"
+      example: "A"
+      selector:
+        text:
+    segments:
+      name: Segments
+      description: List of text segments, each with their own formatting
+      required: true
+      example:
+        - text: "HELLO "
+          color: "bright_red"
+          font: "bold"
+        - text: "THERE"
+          color: "orange"
+          font: "italic"
+        - graphic: "A"
+        - text: " WORLD"
+          color: "rainbow"
+      selector:
+        object:
+    function:
+      name: Function
+      description: Display function/animation for the entire message
+      required: false
+      example: "scroll_up"
+      selector:
+        text:
+
+send_raw_protocol:
+  name: Send Raw Protocol
+  description: Send a raw protocol string directly (for advanced users who want full control)
+  fields:
+    page:
+      name: Page
+      description: Page to send the message to (A-Z)
+      required: false
+      default: "A"
+      example: "A"
+      selector:
+        text:
+    protocol_string:
+      name: Protocol String
+      description: Raw protocol string (without <IDxx> and <Pn> prefix). Example - <CC>HELLO <CE>THERE
+      required: true
+      example: "<CC>HELLO <CE>THERE"
+      selector:
+        text:
+          multiline: true
+
+send_beep:
+  name: Send Beep
+  description: Send an audible beep to the display
+  fields:
+    count:
+      name: Count
+      description: Number of beeps (1-99)
+      required: false
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 99
+          step: 1
+
+show_time:
+  name: Show Time
+  description: Display the current time on the sign
+  fields:
+    page:
+      name: Page
+      description: Page to display time on (A-Z)
+      required: false
+      default: "A"
+      selector:
+        text:
+
+show_date:
+  name: Show Date
+  description: Display the current date on the sign
+  fields:
+    page:
+      name: Page
+      description: Page to display date on (A-Z)
+      required: false
+      default: "A"
+      selector:
+        text:
+
+pause_display:
+  name: Pause Display
+  description: Pause the current display
+  fields:
+    page:
+      name: Page
+      description: Page to apply pause to (A-Z)
+      required: false
+      default: "A"
+      selector:
+        text:
+
+show_thank_you:
+  name: Show Thank You
+  description: Display the THANK YOU graphic
+  fields:
+    page:
+      name: Page
+      description: Page to display graphic on (A-Z)
+      required: false
+      default: "A"
+      selector:
+        text:
+
+show_welcome:
+  name: Show Welcome
+  description: Display the WELCOME graphic
+  fields:
+    page:
+      name: Page
+      description: Page to display graphic on (A-Z)
+      required: false
+      default: "A"
+      selector:
+        text:
+
+set_message:
+  name: Set Message
+  description: Set a message on a specific page on the Prolite display
+  fields:
+    page:
+      name: Page
+      description: Page to send the message to (A-X, Y and Z reserved)
+      required: false
+      default: "A"
+      selector:
+        select:
+          options:
+            - "A"
+            - "B"
+            - "C"
+            - "D"
+            - "E"
+            - "F"
+            - "G"
+            - "H"
+            - "I"
+            - "J"
+            - "K"
+            - "L"
+            - "M"
+            - "N"
+            - "O"
+            - "P"
+            - "Q"
+            - "R"
+            - "S"
+            - "T"
+            - "U"
+            - "V"
+            - "W"
+            - "X"
+    text:
+      name: Text
+      description: The text message to display
+      required: true
+      selector:
+        text:
+          multiline: true
+    color:
+      name: Color
+      description: Color for the text
+      required: false
+      selector:
+        select:
+          options:
+            - "dim_red"
+            - "red"
+            - "bright_red"
+            - "orange"
+            - "bright_orange"
+            - "light_yellow"
+            - "yellow"
+            - "bright_yellow"
+            - "lime"
+            - "dim_lime"
+            - "bright_lime"
+            - "bright_green"
+            - "green"
+            - "dim_green"
+            - "yel_grn_red"
+            - "rainbow"
+            - "red_grn_3d"
+            - "red_yel_3d"
+            - "grn_red_3d"
+            - "grn_yel_3d"
+            - "grn_on_red"
+            - "red_on_grn"
+            - "org_on_grn_3d"
+            - "lime_on_red_3d"
+            - "grn_on_red_3d"
+            - "red_on_grn_3d"
+    font:
+      name: Font
+      description: Font style for the text
+      required: false
+      selector:
+        select:
+          options:
+            - "normal"
+            - "bold"
+            - "italic"
+            - "bold_italic"
+            - "flash_normal"
+            - "flash_bold"
+            - "flash_italic"
+            - "flash_bold_italic"
+    size:
+      name: Size
+      description: Character size
+      required: false
+      selector:
+        select:
+          options:
+            - "5x7"
+            - "4x7"
+    function:
+      name: Function
+      description: Display function/animation
+      required: false
+      selector:
+        select:
+          options:
+            - "auto"
+            - "open"
+            - "cover"
+            - "cycling"
+            - "close_right"
+            - "close_left"
+            - "close_both"
+            - "scroll_up"
+            - "scroll_down"
+            - "overlap"
+            - "stacking"
+            - "appear"
+            - "random"
+            - "shift_left"
+            - "magic"
+    beep:
+      name: Beep
+      description: Enable audible beep with this message
+      required: false
+      default: false
+      selector:
+        boolean:
+
+delete_page:
+  name: Delete Page
+  description: Delete a specific page or all pages
+  fields:
+    page:
+      name: Page
+      description: Page to delete (A-Z or * for all)
+      required: false
+      default: "*"
+      selector:
+        text:
+
+run_page:
+  name: Run Page
+  description: Run a specific page now
+  fields:
+    page:
+      name: Page
+      description: Page to run (A-X, Y and Z reserved)
+      required: true
+      selector:
+        select:
+          options:
+            - "A"
+            - "B"
+            - "C"
+            - "D"
+            - "E"
+            - "F"
+            - "G"
+            - "H"
+            - "I"
+            - "J"
+            - "K"
+            - "L"
+            - "M"
+            - "N"
+            - "O"
+            - "P"
+            - "Q"
+            - "R"
+            - "S"
+            - "T"
+            - "U"
+            - "V"
+            - "W"
+            - "X"
+
+set_speed:
+  name: Set Speed
+  description: Set the scroll speed (A=fastest, Z=slowest or 0-25)
+  fields:
+    speed:
+      name: Speed
+      description: Speed value (A-Z or 0-25, where 0 is fastest)
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 25
+          step: 1
+
+set_time:
+  name: Set Time
+  description: Sync the display's internal clock with the current system time
+
+create_graphic:
+  name: Create Graphic
+  description: Create a custom graphic block (18x7 dots)
+  fields:
+    block:
+      name: Block
+      description: Graphic block letter (A-X, Y and Z reserved)
+      required: true
+      selector:
+        select:
+          options:
+            - "A"
+            - "B"
+            - "C"
+            - "D"
+            - "E"
+            - "F"
+            - "G"
+            - "H"
+            - "I"
+            - "J"
+            - "K"
+            - "L"
+            - "M"
+            - "N"
+            - "O"
+            - "P"
+            - "Q"
+            - "R"
+            - "S"
+            - "T"
+            - "U"
+            - "V"
+            - "W"
+            - "X"
+    pattern:
+      name: Pattern
+      description: 126-character pattern (18x7 grid) using R, G, Y, B for colors
+      required: true
+      selector:
+        text:
+          multiline: true
+
+delete_graphic:
+  name: Delete Graphic
+  description: Delete a specific graphic block or all graphics
+  fields:
+    block:
+      name: Block
+      description: Graphic block to delete (A-X or * for all, Y and Z reserved)
+      required: false
+      default: "*"
+      selector:
+        select:
+          options:
+            - "*"
+            - "A"
+            - "B"
+            - "C"
+            - "D"
+            - "E"
+            - "F"
+            - "G"
+            - "H"
+            - "I"
+            - "J"
+            - "K"
+            - "L"
+            - "M"
+            - "N"
+            - "O"
+            - "P"
+            - "Q"
+            - "R"
+            - "S"
+            - "T"
+            - "U"
+            - "V"
+            - "W"
+            - "X"
+          custom_value: true
+
+delete_all:
+  name: Delete All
+  description: Delete all pages and restore default graphics
+  fields: {}
+
+run_page_timed:
+  name: Run Page Timed
+  description: Run a page for a specified number of times, then switch to another page
+  fields:
+    page:
+      name: Page
+      description: Page to run (A-X, Y and Z reserved)
+      required: true
+      selector:
+        select:
+          options:
+            - "A"
+            - "B"
+            - "C"
+            - "D"
+            - "E"
+            - "F"
+            - "G"
+            - "H"
+            - "I"
+            - "J"
+            - "K"
+            - "L"
+            - "M"
+            - "N"
+            - "O"
+            - "P"
+            - "Q"
+            - "R"
+            - "S"
+            - "T"
+            - "U"
+            - "V"
+            - "W"
+            - "X"
+    times:
+      name: Times
+      description: Number of times to display the page (1-99)
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 99
+          step: 1
+    next_page:
+      name: Next Page
+      description: Page to run after the timer expires (A-X, Y and Z reserved)
+      required: true
+      selector:
+        select:
+          options:
+            - "A"
+            - "B"
+            - "C"
+            - "D"
+            - "E"
+            - "F"
+            - "G"
+            - "H"
+            - "I"
+            - "J"
+            - "K"
+            - "L"
+            - "M"
+            - "N"
+            - "O"
+            - "P"
+            - "Q"
+            - "R"
+            - "S"
+            - "T"
+            - "U"
+            - "V"
+            - "W"
+            - "X"
+
+count_up:
+  name: Count Up
+  description: Set up a count-up timer (days or hours)
+  fields:
+    unit:
+      name: Unit
+      description: Count in days or hours
+      required: true
+      selector:
+        select:
+          options:
+            - "D"
+            - "H"
+    start_value:
+      name: Start Value
+      description: Starting count value (1-9999)
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 9999
+          step: 1
+    target_value:
+      name: Target Value
+      description: Target count value (1-9999)
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 9999
+          step: 1
+    target_page:
+      name: Target Page
+      description: Page to run when target is reached (A-X, Y and Z reserved)
+      required: true
+      selector:
+        select:
+          options:
+            - "A"
+            - "B"
+            - "C"
+            - "D"
+            - "E"
+            - "F"
+            - "G"
+            - "H"
+            - "I"
+            - "J"
+            - "K"
+            - "L"
+            - "M"
+            - "N"
+            - "O"
+            - "P"
+            - "Q"
+            - "R"
+            - "S"
+            - "T"
+            - "U"
+            - "V"
+            - "W"
+            - "X"
+
+count_down:
+  name: Count Down
+  description: Set up a countdown timer
+  fields:
+    days:
+      name: Days
+      description: Days to count down (1-9999)
+      required: false
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 9999
+          step: 1
+    hours:
+      name: Hours
+      description: Hours to count down (0-59)
+      required: false
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 59
+          step: 1
+    minutes:
+      name: Minutes
+      description: Minutes to count down (0-59)
+      required: false
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 59
+          step: 1
+    target_page:
+      name: Target Page
+      description: Page to run when countdown reaches zero (A-X, Y and Z reserved)
+      required: true
+      selector:
+        select:
+          options:
+            - "A"
+            - "B"
+            - "C"
+            - "D"
+            - "E"
+            - "F"
+            - "G"
+            - "H"
+            - "I"
+            - "J"
+            - "K"
+            - "L"
+            - "M"
+            - "N"
+            - "O"
+            - "P"
+            - "Q"
+            - "R"
+            - "S"
+            - "T"
+            - "U"
+            - "V"
+            - "W"
+            - "X"
+
+get_sign_info:
+  name: Get Sign Info
+  description: Request sign information (baud rate, ID, version)
+  fields: {}

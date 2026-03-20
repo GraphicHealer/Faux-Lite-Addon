@@ -1,0 +1,360 @@
+﻿Pro-Lite, Inc.
+Basic Protocol for Pro-Lite ASCII-Series Version 6.00
+
+Introduction
+
+In order to make these capabilities as simple as possible, more user friendly, a new and easy protocol with straight ASCII has been developed. This manual is designed to provide full protocol information for users who want to write their own user interface program to communicate with Pro-Lite ASCII based electronic moving message signs.
+
+Structure of Protocol:
+
+<IDxx><Pn>...TEXT DATA/COMMAND.. [cr][lf]
+
+Where:
+
+<IDxx>	 Packet header also serves as destination Sign identifier <,   >	are ASCII code 3C,  3D
+ID	are character "I" & "D" (must be in Upper case) xx	are the Hex numbers 00 to FF in ASCII format i.e.
+00 =	Global Call (to all Signs) 01 =	display unit 1
+0A =	display unit 10 10 =         display unit 16 FF =	display unit 255
+
+Hexadecimal to Decimal table for ID conversion
+
+0	1	2  3  4	5   6   7  8  9   A  B   C  D  E   F -|---------------------------------------------------------------------------
+0| XX 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 1| 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 2| 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 3| 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
+
+<Pn>	specifies which page this message will go to :
+
+There are 26 pages (A-Z) available in the TruColorII Series. Each page can include text, graphics, Time, Date and other commands like color, scroll up and scroll down, etc.
+
+<, P, >	ASCII character "<" "P" & ">" respectively n	Page number in ASCII character, i.e.
+A         =   Page A B         =   Page B
+:                  : :                  :
+Y         =   Page Y Z         =   Page Z
+
+
+
+
+BASIC PROTOCOLS FOR Pro-Lite ASCII-Series Version 6.00	Page 1
+...TEXT DATA/COMMAND...
+Packet body either Text Data or Commands (refer to Message Data & Command for details)
+
+[cr][lf]	 Packet end with Character Return and Line Feed
+[cr]	= ASCII code 0D
+[lf]	= ASCII code 0A
+
+
+Response feature from display:
+
+<IDXX><CheckCode>[cr][lf]
+
+
+<CheckCode>	S = Successful transmission E = Error
+F = Buffer Full
+
+Sample Transmission w/ response:
+
+To Display:
+
+<ID01><PA>This is a test message[cr][lf]
+
+From Display:
+
+<ID01>S
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BASIC PROTOCOLS FOR Pro-Lite ASCII-Series Version 6.00	Page 2
+(A) Message Data:
+
+This is the actual part of the message that includes the message itself and information on the colors, the fonts, the sizes, the functions such as scroll up, scroll down, Time, Date etc.
+
+Text message:
+
+ASCII characters:	 Accepts free format text, i.e. any character and symbols (96 ASCII printable characters 20H - 7FH).
+
+European characters:64 European characters are provided for multi-nation language applications.
+<E0>	=	µ :                           :
+<EA>	=	ο
+*For the complete European Assignment Table, refer to APPENDIX A
+
+Graphic Blocks:	There are 26 built in graphics that are user programmable. <BA> Graphic A
+:
+<BZ> Graphic Z
+*For the complete Graphics Assignment Table, refer to APPENDIX B
+
+Color information:
+
+There are 26 selectable color combinations.
+To define a color to use for your message, a color attribute such as <CA> must be placed before the text information. The color will remain fixed until another color attribute is inserted.
+<CA>              Low Red <CB>              Mid Red <CC>              High Red
+:
+*The default color is <CP> (Rainbow Color).
+*For the complete Color Assignment Table, refer to APPENDIX C
+
+Character Font:
+
+There are 8 selectable character fonts.
+To define a character font to use for your message, a font attribute such as <SA> must be placed before the text information. The font will remain fixed until another font attribute is inserted.
+<SA>            Normal size <SB>            Double size
+:	: <SH>
+*The default character font is <SA> (Normal Size).
+*For the complete Character Font Table, refer to APPENDIX D
+
+
+
+
+BASIC PROTOCOLS FOR Pro-Lite ASCII-Series Version 6.00	Page 3
+Character Size:
+
+There are 2 selectable character sizes (5X7 or 4X7). To define a character size to use for your message, a character size attribute such as <SI> must be placed before the text information. The size will remain fixed until another size attribute is inserted.
+<SI>              5X7 font size <SJ>             4X7 font size
+*The default character size is <SI> (5X7).
+
+Display functions:
+
+There are 26 display functions such as Scroll up, Scroll down, Animations, Time, Date, Link Page, etc. There are two types of display functions:
+(1)leading commands - how the word will appear (2)tail commands - how the word will disappear
+A leading command, for example “SCROLL UP”, must be placed before the text. A tail command, for example “CLOSE ÆÅ”, must be placed after the text.
+To define which display function to use, a function attribute must be used. <FA>            Auto Function
+<FB>		Open ÅÆ :
+
+*The default function is <FS> (Shift Left).
+*For the complete Display Function Table, refer to APPENDIX E
+
+(B) User alterable Graphic Block:
+
+There are 26 user alterable graphic blocks (A-Z) available,  the basic format is as follow:
+
+<IDxx><Gx>...CCC..[cr][lf]
+
+Where:
+
+<, G & > = ASCII characters "<","G" & ">"
+x	= Block graphic number in ONE ASCII character (A - Z) ...CCC.. =Bit pattern(with color) information of the graphic block is in
+fix length of 126 bytes i.e. 18 dots by 7 rows, where upper left dot is the first byte and the lower right is the last(126th) byte. The whole graphic block update will be ignored if any length exceeds the 126 bytes. For each byte it can either be "R" (red), "G" (green), "Y" (yellow) or "B" (black). Any characters other than "R","G","Y" & "B" are treated as Black.
+
+Example:  Updating graphic block Y with 1 & 2 rows in red, 3,4 & 5 rows in yellow, 6 & 7 rows in green.
+
+<ID01><GY>RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRYYYYYYYYY YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYGGGGGGGGGGG GGGGGGGGGGGGGGGGGGGGGGGGG[cr][lf]
+
+
+
+BASIC PROTOCOLS FOR Pro-Lite ASCII-Series Version 6.00	Page 4
+(C) Commands:
+
+1) Delete Page(s): <IDxx><DPn>[cr][lf]
+<, D, P, >	ASCII characters "<","D","P" & ">"
+n	Page number in ASCII character ( A – Z,  * ) <DP*> =   Delete All pages
+<DPA>=   Delete page A :
+<DPZ>=   Delete page Z
+
+2) Delete Graphic block(s): <IDxx><DGn>[cr][lf]
+<, D, G, >	ASCII characters "<","D","G" & ">"
+n	Graphic block number in ASCII character ( A – Z,  * ) <DG*> =   Delete All graphics
+<DGA>=   Delete graphic block A :
+<DGZ>	=   Delete graphic block Z
+
+3) Delete ALL:
+This command will delete all Page(s), and restore all default Graphic Blocks. <IDxx><D*>[cr][lf]
+<, D, *, >	ASCII characters "<","D","*" & ">"
+
+4) Run Page Now <IDxx><RPn>[cr][lf]
+<, R, P, >	ASCII characters "<","R","P" & ">"
+n	Page number in ASCII character ( A – Z,  * ) <RP*> =   Restart
+<RPA>=   Run page A :
+<RPZ>=   Run page Z
+
+5) Run a page for nn Time and default to another Page <RPx><nn><RPy>[cr][lf]
+<, R, P, >	ASCII characters "<","R","P" & ">"
+x, y	Page number in ASCII character (A - Z)
+<nn>	Where nn represents number of times (01-99) *The <RPy> will run Page y after Page x runs for nn times.
+
+6) Sign information (i.e. Baud Rate, ID, Version)
+
+<IDxx><?>[cr][lf]
+
+7) Resetting the sign to factory default settings
+
+<IDxx><RST>
+
+
+
+
+
+BASIC PROTOCOLS FOR Pro-Lite ASCII-Series Version 6.00	Page 5
+8) Set sign SHIFT SPEED <IDxx><SPDy>[cr][lf]
+<, S, P, D, >   ASCII characters "<","I","D" & ">" y	Letter in ASCII character (A - Z)
+A = fastest; Z = slowest
+
+9) SETTING INTERNAL TIME CLOCK
+
+This is a special command to sync. or set the relative/real time clock of the display unit(s) and it is the only GLOBAL command in this set of protocol. The format as shown below:
+
+<TCCYYMMDDWhhmmssH>[cr][lf]
+<, T, >	ASCII "<", "T" & ">"
+CC	Century (19 = 19TH Century; 20 = 20TH Century) YY	Year (00 - 99)
+MM	Month (01 - 12) DD	Day (01 - 31)
+W	Day of week (0 - 6)
+hh	Hour (in 24 hour format, 00 - 23) mm	Minute (00 - 59)
+ss	Second (00 - 59)
+H	“0” = 12 hr display mode; “1” = 24 hr display mode
+
+
+9) Target Count Up
+This command will define the current, target value, and target page to run when the target value is reached.
+
+<UaccccttttP>[cr][lf]
+<, U, >	ASCII "<", "U" & ">"
+a	“D” for Day and “H” for Hour cccc	Start Value
+(i.e. start count in 0001 days/hrs, 0002 days/hrs, etc) tttt	Target Value
+(i.e. target in 0001 days/hrs, 0002 days/hrs, etc)
+P	Run page P (A - Z) when the target value is reached.
+
+10) Time Count Down
+This command will define the target value of Days, Hours, Minutes and run counting all time values down to zero.
+
+<VddddhhmmP>[cr][lf]
+<, V, >	ASCII "<", "V" & ">"
+dddd	Days set to count down (0001 - 9999) hh	Hours set to count down (01 – 59) mm	Minutes set to count down (01 –59)
+P	Run page P (A - Z) when count down value reaches 0.
+
+
+
+
+BASIC PROTOCOLS FOR Pro-Lite ASCII-Series Version 6.00	Page 6
+APPENDIX A	European Table
+
+EO  {	EB	Ι	ET	[	Eg	ϕ E1  =	EC	Κ	EU	]	Eh	φ E2  ;	ED	Ο	EV	α	Ei	η E3  Α	EE	Μ	EW	_	Ej	κ E4  ?	EF	ϑ	EX	σ	Ek	υ E5  Χ	EG	Λ	EY	θ	El	λ E6  Ε	EH	Π	EZ	∴	Em	ϖ E7  ν	EI	Ν	E[	⊥	En	⇐ E8  >	EJ	≥	E\	β	Eo	f E9  <	EK	Ω	E]		Ep	⊥ E:   Β	EL	Σ	E^	τ	Eq	−
+E;   ≅	EM	Υ	E _	ρ	Er	  
+E<  ∆	EN	Ρ	Ea	ζ	Es	8 E=  Φ	EO	Ξ	Eb	χ	Et	κ E>  8	EP	Τ	Ec	ι	Eu	ρ E?  Γ	EQ	ς	Ed	ε	Ev	3 E@ Η	ER	ℵ	Ee	γ	Ew	Σ EA  ο	ES	ℑ	Ef	δ
+
+APPENDIX B	Graphics Table
+
+
+BA   Telephone BB   Glasses BC   Faucet BD   Rocket
+BE   Space monster BF	Key
+BG   Shirt
+BH   Helicopter BI	Car
+BJ	Tank BK   House BL	Tea pot
+BM   Knife & fork
+
+BN	Duck
+BO	Motorcycle BP	Bicycle BQ	Crown
+BR	Twin Hearts BS	Arrow Æ BT	Arrow Å BU	Arrow
+BV	Arrow
+BW	Glass of beer BX	Chair
+BY	High-heel shoe BZ	Wine glass
+
+
+APPENDIX C	Color Table
+
+
+CA	Dim RED CB	RED
+CC	Bright RED CD	ORANGE
+CE	Bright ORANGE CF	Light YELLOW CG	YELLOW
+CH	Bright YELLOW CI	LIME
+
+CJ	Dim LIME CK	Bright LIME
+CL	Bright GREEN CM	GREEN
+CN	Dim GREEN CO	YEL/GRN/RED CP	RAINBOW
+CQ	RED/GRN 3D CR	RED/YEL 3D
+
+CS      GRN/RED 3D CT       GRN/YEL 3D CU      GRN on RED CV      RED on GRN
+CW     ORG on GRN 3D CX      LIME on RED 3D CY      GRN on RED 3D CZ       RED on GRN 3D
+
+
+
+
+
+BASIC PROTOCOLS FOR Pro-Lite ASCII-Series Version 6.00	Page 7
+APPENDIX D	Font Table
+
+
+SA	Normal SD	Bold Italic SG	Flash Italic
+
+SB	Bold
+SE	Flash Normal SH	Flash Bold Italic
+
+SC	Italic
+SF	Flash Bold
+
+
+
+
+
+APPENDIX E	Function	Table
+
+
+FA       AUTO FD       DATE
+FG	CLOSE Æ
+FJ	SCROLL DOWN FM	COMIC 1
+FP	PAUSE FS	SHIFT Å
+FV	THANK YOU FY	(N/A)
+F2	CURRENT
+F5	MINUTE LEFT
+
+FB	OPEN ÅÆ FE	CYCLING FH	CLOSE ÆÅ FK	OVERLAP FN	COMIC 2 FQ	APPEAR
+FT	TIME
+FW	WELCOME FZ	LINK PAGE F3	DAY LEFT
+F6	SECOND LEFT
+
+FC	COVER ÅÆ FF	CLOSE Å FI	SCROLL UP FL	STACKING FO	BEEP
+FR	RANDOM FU	MAGIC FX	(N/A)
+F1	TARGET
+F4	HOUR LEFT
+
+
+Wiring Assignments for Series II
+
+
+
+DB9 Female Connector To IBM PC Com1 or Com2
+
+
+TruColorII RJ12 Connector
+
+
+
+
+
+
+
+
+2                     Rx                                                         GND     Tx 3                      Tx                                                          GND     Rx
+
+5	GND
+
+
+
+
+
+
+
+
+
+
+
+BASIC PROTOCOLS FOR Pro-Lite ASCII-Series Version 6.00	Page 8

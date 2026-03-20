@@ -1,0 +1,42 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Set up Faux-Lite Display",
+                "description": "Choose how to add your Faux-Lite device",
+                "menu_options": {
+                    "scan": "Scan for devices",
+                    "manual": "Enter IP address manually"
+                }
+            },
+            "scan": {
+                "title": "Select Faux-Lite Device",
+                "description": "Found {count} Faux-Lite device(s) on your network. Select one to add:",
+                "data": {
+                    "device": "Device"
+                }
+            },
+            "manual": {
+                "title": "Add Faux-Lite Device Manually",
+                "description": "Enter the IP address of your Faux-Lite device",
+                "data": {
+                    "host": "IP Address or Hostname",
+                    "sign_id": "Sign ID (default: 01)"
+                },
+                "data_description": {
+                    "host": "The IP address or hostname of your Faux-Lite device (e.g., 192.168.1.100)",
+                    "sign_id": "The ID of your Pro-Lite display (01-99)"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Failed to connect to the Faux-Lite device. Make sure it's online and accessible on your network.",
+            "unknown": "Unexpected error occurred"
+        },
+        "abort": {
+            "already_configured": "This Faux-Lite device is already configured",
+            "cannot_connect": "Failed to connect to the device",
+            "unknown": "An unexpected error occurred"
+        }
+    }
+}

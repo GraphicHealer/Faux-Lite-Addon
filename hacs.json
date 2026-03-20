@@ -1,0 +1,6 @@
+{
+  "name": "Faux-Lite Display",
+  "render_readme": true,
+  "domains": ["select", "text", "number"],
+  "homeassistant": "2023.1.0"
+}
